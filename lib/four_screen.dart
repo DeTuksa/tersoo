@@ -4,16 +4,17 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:terso_cpm/input_widget.dart';
 import 'package:terso_cpm/models/activity_model.dart';
+import 'package:terso_cpm/models/four_part_model.dart';
 import 'package:terso_cpm/screen_size.dart';
 
-class ThreeScreen extends StatefulWidget {
-  const ThreeScreen({Key key}) : super(key: key);
+class FourScreen extends StatefulWidget {
+  const FourScreen({Key key}) : super(key: key);
 
   @override
-  _ThreeScreenState createState() => _ThreeScreenState();
+  _FourScreenState createState() => _FourScreenState();
 }
 
-class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStateMixin {
+class _FourScreenState extends State<FourScreen> with SingleTickerProviderStateMixin {
 
   TextEditingController firstActivityName = TextEditingController();
   TextEditingController firstActivityDuration = TextEditingController();
@@ -30,6 +31,11 @@ class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStat
   TextEditingController thirdActivityPrecedents = TextEditingController();
   TextEditingController thirdActivitySymbol = TextEditingController();
 
+  TextEditingController fourthActivityName = TextEditingController();
+  TextEditingController fourthActivityDuration = TextEditingController();
+  TextEditingController fourthActivityPrecedents = TextEditingController();
+  TextEditingController fourthActivitySymbol = TextEditingController();
+
   AnimationController myAnimation;
 
   @override
@@ -39,6 +45,7 @@ class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStat
     firstActivitySymbol.text = 'A';
     secondActivitySymbol.text = 'B';
     thirdActivitySymbol.text = 'C';
+    fourthActivitySymbol.text = 'D';
     super.initState();
   }
 
@@ -100,8 +107,8 @@ class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStat
                       topLeft: Radius.circular(24),
                       topRight: Radius.circular(24)),
                 ),
-                child: Consumer<ActivityModel>(
-                  builder: (context, activityModel, _) {
+                child: Consumer<FourPartModel>(
+                  builder: (context, fourPartModel, _) {
                     return ListView(
                       physics: BouncingScrollPhysics(),
                       children: [
@@ -124,17 +131,24 @@ class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStat
                           durationController: thirdActivityDuration,
                           presController: thirdActivityPrecedents,
                         ),
+                        InputWidget(
+                          nameController: fourthActivityName,
+                          activitySymbol: fourthActivitySymbol.text,
+                          durationController: fourthActivityDuration,
+                          presController: fourthActivityPrecedents,
+                        ),
                         SizedBox(height: 20,),
                         Align(
                           alignment: Alignment.center,
                           child: GestureDetector(
                             onTap: () async {
-                              activityModel.collectActivities(
+                              fourPartModel.collectActivities(
                                   firstActivityName.text, firstActivitySymbol.text, firstActivityDuration.text, firstActivityPrecedents.text,
                                   secondActivityName.text, secondActivitySymbol.text, secondActivityDuration.text, secondActivityPrecedents.text,
-                                  thirdActivityName.text, thirdActivitySymbol.text, thirdActivityDuration.text, thirdActivityPrecedents.text);
-                              await activityModel.activityPresSplit();
-                              await activityModel.threeActivitiesDecision();
+                                  thirdActivityName.text, thirdActivitySymbol.text, thirdActivityDuration.text, thirdActivityPrecedents.text,
+                              fourthActivityName.text, fourthActivitySymbol.text, fourthActivityDuration.text, fourthActivityPrecedents.text);
+                              await fourPartModel.activityPresSplit();
+                              await fourPartModel.fourActivitiesDecision();
                               showBottomSheet(
                                   context: context,
                                   shape: RoundedRectangleBorder(
@@ -148,11 +162,11 @@ class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStat
                                       height: height(context) * 0.95,
                                       width: width(context),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(36),
-                                          topLeft: Radius.circular(36)
-                                        ),
-                                        color: Colors.white
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(36),
+                                              topLeft: Radius.circular(36)
+                                          ),
+                                          color: Colors.white
                                       ),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
@@ -166,7 +180,7 @@ class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStat
                                             children: [
                                               IconButton(
                                                 icon: Icon(
-                                                  Icons.cancel
+                                                    Icons.cancel
                                                 ),
                                                 onPressed: () {
                                                   Navigator.pop(context);
@@ -176,22 +190,22 @@ class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStat
                                           ),
                                           SizedBox(height: 40,),
                                           Lottie.asset(
-                                            'assets/lottie/good-job.json',
-                                            fit: BoxFit.contain,
-                                            repeat: false,
-                                            reverse: false
+                                              'assets/lottie/good-job.json',
+                                              fit: BoxFit.contain,
+                                              repeat: false,
+                                              reverse: false
                                           ),
                                           SizedBox(height: 10,),
                                           Text(
                                             'Critical Path is:',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                              fontSize: 20
+                                                fontSize: 20
                                             ),
                                           ),
                                           SizedBox(height: 20,),
                                           Text(
-                                            '${activityModel.criticalPath}',
+                                            '${fourPartModel.criticalPath}',
                                             style: TextStyle(
                                                 fontSize: 26,
                                                 fontWeight: FontWeight.w700
@@ -212,7 +226,7 @@ class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStat
                                               ),
                                               SizedBox(height: 20,),
                                               Text(
-                                                '${activityModel.finalDuration}',
+                                                '${fourPartModel.finalDuration}',
                                                 style: TextStyle(
                                                     fontSize: 26,
                                                     fontWeight: FontWeight.w700
@@ -268,46 +282,22 @@ class _ThreeScreenState extends State<ThreeScreen> with SingleTickerProviderStat
         builder: (context, activityModel, _) {
           return Center(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Critical Path is:',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600
-                      ),
-                    ),
-                    SizedBox(width: 20,),
-                    Text(
-                        '${activityModel.criticalPath}',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700
-                      ),
-                    )
-                  ],
+                Text(
+                  'Critical Part is:',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600
+                  ),
                 ),
                 SizedBox(height: 20,),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Critical Path Duration is:',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600
-                      ),
-                    ),
-                    SizedBox(width: 20,),
-                    Text(
-                      '${activityModel.finalDuration}',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700
-                      ),
-                    )
-                  ],
-                ),
+                Text(
+                  '${activityModel.finalDuration}',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700
+                  ),
+                )
               ],
             ),
           );

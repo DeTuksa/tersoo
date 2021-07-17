@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:terso_cpm/activity_screen.dart';
+import 'package:terso_cpm/four_screen.dart';
 import 'package:terso_cpm/home_screen.dart';
 import 'package:terso_cpm/models/activity_model.dart';
+import 'package:terso_cpm/models/four_part_model.dart';
 import 'package:terso_cpm/three_screen.dart';
 
 void main() {
@@ -13,6 +15,9 @@ void main() {
     providers: [
       ChangeNotifierProvider(
         create: (_) => ActivityModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => FourPartModel(),
       )
     ],
     child: MyApp(),
@@ -33,7 +38,8 @@ class MyApp extends StatelessWidget {
       routes: {
         'home-screen': (context) => HomeScreen(),
         'activity-screen': (context) => ActivityScreen(),
-        'three-screen': (context) => ThreeScreen()
+        'three-screen': (context) => ThreeScreen(),
+        'four-screen': (context) => FourScreen(),
       },
       home: MyHomePage(),
     );

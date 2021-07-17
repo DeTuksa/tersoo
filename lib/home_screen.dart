@@ -74,6 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       NumberCard(
                         lottie: 'assets/lottie/cpm-4.json',
                         title: 'Calculate for 4 Activity\'s',
+                        function: () {
+                          Navigator.of(context).pushNamed('four-screen');
+                        },
                       ),
                       NumberCard(
                         lottie: 'assets/lottie/cpm-5.json',

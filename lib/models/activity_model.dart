@@ -11,6 +11,8 @@ class ActivityModel extends ChangeNotifier {
 
   int finalDuration = 0;
 
+  String criticalPath = '';
+
   ActivityModel() {
     notifyListeners();
   }
@@ -65,15 +67,18 @@ class ActivityModel extends ChangeNotifier {
         finalDuration = firsActivity.activityDuration
             + secondActivity.activityDuration
             + thirdActivity.activityDuration;
+        criticalPath = 'A -> B -> C';
         notifyListeners();
       } else {
         if (secondActivity.activityDuration >= thirdActivity.activityDuration) {
           finalDuration = firsActivity.activityDuration
               + secondActivity.activityDuration;
+          criticalPath = 'A -> B';
           notifyListeners();
         } else {
           finalDuration = firsActivity.activityDuration
               + thirdActivity.activityDuration;
+          criticalPath = 'A -> C';
           notifyListeners();
         }
       }
